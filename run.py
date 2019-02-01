@@ -4,7 +4,7 @@ import forms
 
 app = Flask(__name__)
 PORT = 8000
-DEBUG = True
+DEBUG = False
 
 @app.errorhandler(404)
 def not_found(error):
