@@ -1,0 +1,47 @@
+{% extends 'base/head.html'%}
+
+
+{% block nav %}
+
+{% include 'nav.html'%}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+   <div class="row mt-5">
+      <div class="col-md-12 d-flex justify-content-center">
+
+         <div class="col-md-5 bg-dark p-4 rounded shadow-lg">
+            {% from "macro.html" import render_field %}
+            <form method="POST">
+               <div class="form-group">
+                  <label for="" class="text-white">{{ registre.correo.label}}</label>
+                  {{ render_field(registre.correo, class='form-control')}}
+               </div>
+               <div class="form-group">
+                  <label for="" class="text-white">{{ registre.cdestudiante.label }}</label>
+                  {{ render_field(registre.cdestudiante, class='form-control')}}
+               </div>
+               <div class="form-group">
+                  <label for="" class="text-white">{{ registre.password.label }}</label>
+                  {{ render_field(registre.password, class='form-control')}}
+               </div>
+               <div class="form-group">
+                  <label for="" class="text-white">{{ registre.confirmpass.label }}</label>
+                  {{ render_field(registre.confirmpass, class='form-control')}}
+               </div>
+               <div class="form-group">
+                  <input type="submit" class="btn btn-danger w-100" value="Registrar">
+               </div>
+            </form>
+
+
+
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% macro render_field(field) %}
+    
+    <dd> {{ field(**kwargs) | safe}}
+    
+{% endmacro %} -->
+
+{% macro render_label(label) %}
+
+    <td> {{ label.label(**kwargs) }}
+    
+{% endmacro %}
+
+
+{% macro search_field(field)%}
+
+    <dd> {{ field(**kwargs) | safe}}    
+    
+{% endmacro %}
