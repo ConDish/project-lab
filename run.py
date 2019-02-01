@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for, session
 import forms
 
 app = Flask(__name__)
-PORT = 8000
+PORT = 5000
 DEBUG = False
 
 @app.errorhandler(404)
