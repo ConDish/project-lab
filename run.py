@@ -12,11 +12,9 @@ def not_found(error):
 
 @app.route('/', methods=['GET'])
 def index():
-   
-
    return render_template('index.html')
 
-@app.route('/registro', methods=['GET', 'POST'])
+""" @app.route('/registro', methods=['GET', 'POST'])
 def registrar():
 
    register = forms.registro(request.form)
@@ -24,6 +22,6 @@ def registrar():
    return render_template('registro.html', registre = register)
 
 
-
+ """
 if __name__ == '__main__':
    app.run(port = PORT, debug = DEBUG )
