@@ -15,14 +15,13 @@
 
          <div class="col-md-5 bg-dark p-4 rounded shadow-lg">
             {% from "macro.html" import render_field %}
-            <form method="POST">
                <div class="form-group">
                   <label for="" class="text-white">{{ registre.correo.label}}</label>
                   {{ render_field(registre.correo, class='form-control')}}
                </div>
                <div class="form-group">
                   <label for="" class="text-white">{{ registre.cdestudiante.label }}</label>
-                  {{ render_field(registre.cdestudiante, class='form-control')}}
+                  {{ render_field(registre.cdestudiante, class='form-control', type="number")}}
                </div>
                <div class="form-group">
                   <label for="" class="text-white">{{ registre.password.label }}</label>
@@ -33,9 +32,9 @@
                   {{ render_field(registre.confirmpass, class='form-control')}}
                </div>
                <div class="form-group">
-                  <input type="submit" class="btn btn-danger w-100" value="Registrar">
+                  <input type="submit" class="btn btn-danger w-100" value="Registrar" id="btnRegistro">
                </div>
-            </form>
+
 
 
 

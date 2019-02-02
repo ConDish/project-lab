@@ -24,41 +24,86 @@ def index():
 @app.route('/registro', methods=['GET', 'POST'])
 def registrar():
 
-   register = forms.registro(request.form)
+      register = forms.registro(request.form)
 
-   flag = False
 
-   if request.method == 'POST' :
-      try : 
-         user = {
-            "correo" : request.form['correo'],
-            "cdestudiante" : request.form['cdestudiante'],
-            "password" : request.form['password'],
-            "confirmpass" : request.form["confirmpass"]
-         }
+      if request.method == 'POST' :
 
-         register = Estudiante(correo=user["correo"], codigo = user["cdestudiante"], password=user["password"], confirmpass=user["confirmpass"])
+         try : 
+            
+            codigo = CodigoEstudiante.query.order_by(CodigoEstudiante.codigo).all()
 
-         print(register)
+            user = json.loads(request.data.decode('utf-8'))
 
-         db.session.add(register)
-         db.session.commit()
+            codigo = CodigoEstudiante.query.filter_by(codigo=int(user["cdestudiante"]), flag=True).first()
 
-         flag = True
+            if codigo is None:
+               return jsonify({"success" : "0"})
+            else :
 
-         
-      except : 
-         flag = False
-      finally :
+               register = Estudiante(correo=user["correo"], codigo = user["cdestudiante"], password=user["password"], confirmpass=user["confirmpass"])
+               
+               db.session.add(register)
 
-         if flag : 
-            return redirect(url_for('index'))
-         else :
-            return redirect(url_for('registrar'))
+               CodigoEstudiante.query.filter_by(codigo=user["cdestudiante"]).update(dict(flag=False))
 
-         
-   return render_template('registro.html', registre = register)
+               db.session.commit()
 
+               return jsonify({"success" : "1"})
+            # for codigos in codigo :
+
+            #    print(codigos.codigo)
+            #    if(codigos.codigo == int(user["cdestudiante"])) :
+
+            #       if(codigos.flag != True):
+
+            #          register = Estudiante(correo=user["correo"], codigo = user["cdestudiante"], password=user["password"], confirmpass=user["confirmpass"])
+            #          db.session.add(register)
+
+            #          CodigoEstudiante.query.filter_by(codigo=codigos.codigo).update(dict(flag=False))
+                     
+            #          db.session.commit()
+
+            #          res = "1"
+            #       else :
+            #          res = "3"
+            #    else :
+            #       res = "2"
+         except:
+            return jsonify({"success" : "2"})
+            
+           
+
+      return render_template('registro.html', registre = register)    
+
+
+            
+
+
+      #    user = json.loads(request.data.decode('utf-8'))
+      #       if(codigos.codigo == int(user["cdestudiante"])) :
+
+      #          if(codigos.flag != True):
+
+      #             register = Estudiante(correo=user["correo"], codigo = user["cdestudiante"], password=user["password"], confirmpass=user["confirmpass"])
+      #             db.session.add(register)
+               
+      #             codigochange = CodigoEstudiante.query.filter_by(codigo=codigos.codigo).update(dict(flag=False))
+                  
+      #             db.session.commit()
+               
+      #             return jsonify('{"success" : "1"}')
+
+      #          else :
+
+      #             return jsonify('{"success" : "3"}')
+      #       else :
+
+      #          return jsonify('{"success" : "2"}')
+
+      # except : 
+      #       return jsonify('{"success" : "0"}')      
+            
 @app.route('/login', methods=["GET", "POST"])
 def login() : 
 
@@ -92,15 +137,12 @@ def generarCodigo():
 
          db.session.add(generarcode)
          db.session.commit()
-         
-         #print('asdasasd', generarcode[0].id)
 
          
-         return jsonify('{"success" : "1"}')
+         return jsonify({"success" : "1"})
 
       except : 
-
-         return jsonify('{"success" : "0"}')
+         return jsonify({"success" : "0"})
 
 
    return render_template('generarCodigo.html', generarCodigo = generarcode)
@@ -110,4 +152,4 @@ if __name__ == '__main__':
 
    with app.app_context():
       db.create_all()
-   app.run(port = 5000, debug = False)
+   app.run(port = 5000, debug = True)
