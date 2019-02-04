@@ -7,14 +7,15 @@ import json
 from models import *
 
 app = Flask(__name__)
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = os.urandom(24)
+# app.config['SESSION_TYPE'] = 'filesystem'
+# app.config['SECRET_KEY'] = os.urandom(24)
+
+app.secret_key = 'hacking'
 
 # Session(app)
 
-
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ucumiobsfqvbol:daa1875d1c22ee0373cafe10fea8be9d94b05e247586c6bfedaa3b7d50e9c09f@ec2-23-21-244-254.compute-1.amazonaws.com:5432/dt61msb1aotuf"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 
