@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, jsonify
-from flask_session import Session
+
 import os
 import forms
 import json
@@ -9,8 +9,6 @@ app = Flask(__name__)
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = os.urandom(24)
-
-Session(app)
 
 db.init_app(app)
 
