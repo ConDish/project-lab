@@ -255,22 +255,13 @@ def electivascrud():
       elecpro = db.session.query(Electiva, Estudiante, Profesor).outerjoin(EstudianteElectiva).outerjoin(Estudiante).outerjoin(ProfesorElectiva).outerjoin(Profesor).all()
 
 
-      # for e,s,p in elecpro:
-      #    print(e,s,p)
-
-
-      # for dato in elest:
-      #    print(dato)
-      #    test = db.session.query(ProfesorElectiva, Profesor).filter(ProfesorElectiva.electiva_id==dato.id).first()
-      #    # est = db.session.query(Estudiante).filter(Estudiante.id==dato.estudiante_id).first()
-      #    # elecall.append([dato, pro, est])
 
       if request.method == "POST":
          try :
 
             electiva = json.loads(request.data.decode('utf-8'))
 
-            register = Electiva(nombre=electiva["nombre"], descripcion=electiva["descripcion"], numerocupo=electiva["numerocupo"], profesor_id=None, estudiante_id=None)
+            register = Electiva(nombre=electiva["nombre"], descripcion=electiva["descripcion"], numerocupo=electiva["numerocupo"])
                
             db.session.add(register)
 
