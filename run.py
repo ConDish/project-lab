@@ -167,12 +167,13 @@ def profesoreditar():
 
             if elecpro is not None:
 
+
                db.session.delete(elecpro)
 
                db.session.commit()
+              
 
                if profesor["electiva_id"] != 0:
-
                   
                   proall.id = int(profesor["idnueva"])
 
@@ -183,19 +184,24 @@ def profesoreditar():
                   db.session.add(add)
 
                   db.session.commit()
-                 
                else :
-
+                  
                   proall.id = int(profesor["idnueva"])
-                  proall.nombre = profesor["nombre"]
 
                   db.session.commit()
 
-                  add = ProfesorElectiva(profesor_id=int(profesor["idnueva"]), electiva_id=int(profesor["electiva_id"]))
+            else :
 
-                  db.session.add(add)
+               proall.id = int(profesor["idnueva"])
+               proall.nombre = profesor["nombre"]
 
-                  db.session.commit()
+               db.session.commit()
+
+               add = ProfesorElectiva(profesor_id=int(profesor["idnueva"]), electiva_id=int(profesor["electiva_id"]))
+
+               db.session.add(add)
+
+               db.session.commit()
 
             return jsonify({'success': '1'})
       except:
@@ -360,8 +366,8 @@ def usuario():
                db.session.add(register)
                db.session.commit()
             else :
-                return jsonify({'success' : '2'})
 
+                return jsonify({'success' : '2'})
 
             return jsonify({'success' : '1'})
 
@@ -390,4 +396,4 @@ if __name__ == '__main__':
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = False)
+   app.run(port = 8001, debug = True)
