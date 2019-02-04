@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = os.urandom(24)
 
-Session(app)
+# Session(app)
 
 db.init_app(app)
 
@@ -391,4 +391,4 @@ if __name__ == '__main__':
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = False)
+   app.run(port = 8001, debug = True)
