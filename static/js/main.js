@@ -599,10 +599,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = "usuario";
 
 
-                    } else {
+                    } else if (response.success == 2) {
 
+                        alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Se acabaron los cupos! </div>";
+
+                    }else{
                         alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Ya escogiste esta electiva! </div>";
-
                     }
 
 

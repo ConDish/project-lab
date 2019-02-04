@@ -354,13 +354,14 @@ def usuario():
 
             datoelec = Electiva.query.filter_by(id=electiva["electiva_id"]).first()
 
-            datoelec.numerocupo -= 1
+            if datoelec.numerocupo > 0:
+               datoelec.numerocupo -= 1
+               register = EstudianteElectiva(estudiante_id=usuario.id, electiva_id=electiva["electiva_id"])
+               db.session.add(register)
+               db.session.commit()
+            else :
+                return jsonify({'success' : '2'})
 
-            register = EstudianteElectiva(estudiante_id=usuario.id, electiva_id=electiva["electiva_id"])
-               
-            db.session.add(register)
-
-            db.session.commit()
 
             return jsonify({'success' : '1'})
 
