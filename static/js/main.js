@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             alerta.innerHTML = "<div class='alert alert-success' role='alert'> Se creo con exito! </div>";
 
-                            // window.location.href = "electivascrud"
+                            window.location.href = "electivascrud"
 
                         } else {
                             alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Error al crearlo! </div>";
