@@ -302,7 +302,7 @@ def electivaeliminar(id):
       return redirect(url_for('login'))
 
 
-# --------------------- EDITAR ELECTIVA ----------------------------
+# --------------------- EDITAR ELECTIVA  -----------------------------
 @app.route("/electivaeditar", methods=["GET", "POST"])
 def electvaeditar():
 
