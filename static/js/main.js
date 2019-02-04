@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Se acabaron los cupos! </div>";
 
                     }else{
-                        alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Ya escogiste esta electiva! </div>";
+                        alerta.innerHTML = "<div class='alert alert-danger' role='alert'> Ya escogiste esta electiva o se acabaron los cupos! </div>";
                     }
 
 
