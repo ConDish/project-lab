@@ -192,16 +192,20 @@ def profesoreditar():
 
             else :
 
+               print("Entre")
+
                proall.id = int(profesor["idnueva"])
                proall.nombre = profesor["nombre"]
 
                db.session.commit()
 
-               add = ProfesorElectiva(profesor_id=int(profesor["idnueva"]), electiva_id=int(profesor["electiva_id"]))
+               if profesor["electiva_id"] != 0:
 
-               db.session.add(add)
+                  add = ProfesorElectiva(profesor_id=int(profesor["idnueva"]), electiva_id=int(profesor["electiva_id"]))
 
-               db.session.commit()
+                  db.session.add(add)
+
+                  db.session.commit()
 
             return jsonify({'success': '1'})
       except:
