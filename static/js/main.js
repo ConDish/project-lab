@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Boton de crear profesor
+    // Boton de inscribir estudiante
 
 
     const btnInscribir = document.getElementById('btnInscribir');
@@ -595,6 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.success == 1) {
 
                         alerta.innerHTML = "<div class='alert alert-success' role='alert'> Muy bien! </div>";
+
+                        window.location.href = "usuario";
 
 
                     } else {

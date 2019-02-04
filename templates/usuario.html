@@ -17,27 +17,30 @@
 
         <div class="col-md-12">
             <div class="col-md-12 text-center bg-info">
-                <h1 class="text-white-50">Todas las Electivas</h1>
+                <h1 class="text-white-50">Todas las Electivas escogidas</h1>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-light" id="elec">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Nombre de electiva</th>
+                            <th scope="col">Nombre de electiva </th>
+                            <th scope="col">Descripcion de electiva </th>
+                            <th scope="col">Cupo de electiva</th>
 
                         </tr>
                     </thead>
                     <tbody>
 
-                        {% for es, el in estlec %}
+                        {% for e, el in estlec %}
 
                         <tr>
-                            <td>{{ es.id }}</td>
-                            <td>{{ es.correo }}</td>
+                            <td>{{ el.id }}</td>
                             <td>{{ el.nombre }}</td>
+                            <td>{{ el.descripcion }}</td>
+                            <td>{{ el.numerocupo }}</td>
                         </tr>
+
                         {% endfor %}
 
 

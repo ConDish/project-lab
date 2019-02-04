@@ -339,7 +339,11 @@ def usuario():
 
       # Todas las electivas 
       elest = db.session.query(Electiva).all()
-      estlec = db.session.query(Estudiante, Electiva).outerjoin(EstudianteElectiva).outerjoin(Electiva)
+
+      usuario = Estudiante.query.filter_by(correo=session["usuario"]).first()
+
+      estlec = db.session.query(EstudianteElectiva, Electiva).filter(EstudianteElectiva.estudiante_id==usuario.id).join(Electiva)
+
 
       if request.method == "POST":
          try :
@@ -385,4 +389,4 @@ if __name__ == '__main__':
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = True)
+   app.run(port = 8001, debug = False)
