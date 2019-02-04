@@ -261,11 +261,13 @@ def electivascrud():
 
             electiva = json.loads(request.data.decode('utf-8'))
 
-            register = Electiva(nombre=electiva["nombre"], descripcion=electiva["descripcion"], numerocupo=electiva["numerocupo"])
+            register = Electiva(nombre=electiva["nombre"], descripcion=electiva["descripcion"], numerocupo=int(electiva["numerocupo"]))
                
             db.session.add(register)
 
             db.session.commit()
+
+            print(electiva)
 
             return jsonify({'success' : '1'})
 
@@ -390,4 +392,4 @@ if __name__ == '__main__':
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = False)
+   app.run(port = 8001, debug = True)
