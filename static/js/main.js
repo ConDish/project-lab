@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(response => {
 
                             if (response.success == 1) {
-
+                                
                                 window.location.href = "login"
 
                             } else if (response.success == 0) {

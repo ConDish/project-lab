@@ -7,17 +7,15 @@ import json
 from models import *
 
 app = Flask(__name__)
-# app.config['SESSION_TYPE'] = 'filesystem'
-# app.config['SECRET_KEY'] = os.urandom(24)
-
-app.secret_key = 'hacking'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = os.urandom(24)
 
 # Session(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ucumiobsfqvbol:daa1875d1c22ee0373cafe10fea8be9d94b05e247586c6bfedaa3b7d50e9c09f@ec2-23-21-244-254.compute-1.amazonaws.com:5432/dt61msb1aotuf"
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db.init_app(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ucumiobsfqvbol:daa1875d1c22ee0373cafe10fea8be9d94b05e247586c6bfedaa3b7d50e9c09f@ec2-23-21-244-254.compute-1.amazonaws.com:5432/dt61msb1aotuf"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -45,7 +43,8 @@ def registrar():
             
             user = json.loads(request.data.decode('utf-8'))
 
-            register = Estudiante(correo=user["correo"], codigo = user["cdestudiante"], password=user["password"], electiva_id=None)
+
+            register = Estudiante(correo=user["correo"], codigo = int(user["cdestudiante"]), password=user["password"])
                
             db.session.add(register)
 
@@ -380,8 +379,10 @@ def logout(nombre):
       return "No hay session"
 
 if __name__ == '__main__':
+   
+   db.init_app(app)
 
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = False)
+   app.run(port = 8001, debug = True)
