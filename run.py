@@ -69,23 +69,25 @@ def login() :
 
          # user = Estudiante.query.order_by(Estudiante.id).all()
          try :
+            user = login.correo.data
+            password = login.password.data
 
-            user = json.loads(request.data.decode('utf-8'))
-
-            admin = Administrador.query.filter_by(correo=user["correo"], password=user["password"]).first()
-            usuario = Estudiante.query.filter_by(correo=user["correo"], password=user["password"]).first()
+            admin = Administrador.query.filter_by(correo=user, password=password).first()
+            usuario = Estudiante.query.filter_by(correo=user, password=password).first()
 
             if admin is None :
                if usuario is None:
-                  return jsonify({'success' : '0'})
+                  return redirect(url_for('login'))
                else : 
-                  session['usuario'] = user["correo"]
-                  return jsonify({'success' : '2'})
+                  session['usuario'] = user
+                  return redirect(url_for('usuario'))
             else:
-               session['administrador'] = user["correo"]
-               return jsonify({'success' : '1'})
+               session['administrador'] = user
+               return redirect(url_for('profesorcrud'))
+
          except :
             return jsonify({'success' : '3'})
+            
 
       if "administrador" in session or "usuario" in session :
          return redirect(url_for('index'))
@@ -119,43 +121,49 @@ def profesorcrud():
 
       proelec = db.session.query(Profesor, Electiva).outerjoin(ProfesorElectiva).outerjoin(Electiva)
                
-      # db.session.add(register)
 
-      # db.session.commit()
-
-      if request.method == "POST":
-         try :
-
-            profesor = json.loads(request.data.decode('utf-8'))
-
-
-            register = Profesor(id=int(profesor["codigo"]), nombre=profesor["nombre"])
-
-            db.session.add(register)
-
-            if profesor["electiva_id"] != 0:
-               elecpro = ProfesorElectiva(profesor_id=int(profesor["codigo"]), electiva_id=profesor["electiva_id"])
-
-               db.session.add(elecpro)
-               
-            db.session.commit()
-
-
-            return jsonify({'success' : '1'})
-
-         except:
-            return jsonify({'success': '0'})
       return render_template('admin/profesorcrud.html', administrador=session["administrador"], form = profesor, elest=elest, proelec=proelec)
    else :
-
       return redirect(url_for('login'))
 
 
+# ----------------------- PROFESOR CREAR ---------------------------------
+@app.route('/profesorcrear', methods=["POST"])
+def profesorcrear():
+
+   if request.method == "POST":
+      try :
+
+         profesor = json.loads(request.data.decode('utf-8'))
+
+
+         register = Profesor(id=int(profesor["codigo"]), nombre=profesor["nombre"])
+
+         db.session.add(register)
+
+         db.session.commit()
+
+         if profesor["electiva_id"] != 0:
+            elecpro = ProfesorElectiva(profesor_id=int(profesor["codigo"]), electiva_id=profesor["electiva_id"])
+
+            db.session.add(elecpro)
+
+            db.session.commit()
+
+
+         return jsonify({'success' : '1'})
+
+      except:
+         return jsonify({'success': '0'})
+
+
+
+
 # --------------------- EDITAR PROFESOR ----------------------------
-@app.route("/profesoreditar", methods=["GET", "POST"])
+@app.route("/profesoreditar", methods=["POST"])
 def profesoreditar():
 
-   if 'administrador' in session and request.method == "POST":
+   if request.method == "POST":
       
       try :
             
@@ -220,9 +228,8 @@ def profesoreditar():
 @app.route('/profesoreliminar/<id>', methods=["GET"])
 def profesoreliminar(id):
 
-   if 'administrador' in session:
 
-      if request.method == "GET":
+   if request.method == "GET":
          
          try :
 
@@ -235,9 +242,6 @@ def profesoreliminar(id):
 
          except Exception:
             return jsonify({'success' : '0'})
-
-      else :
-        return jsonify({'success' : '0'})
       
    else :
       return redirect(url_for('login'))
@@ -257,8 +261,16 @@ def electivascrud():
       elecpro = db.session.query(Electiva, Estudiante, Profesor).outerjoin(EstudianteElectiva).outerjoin(Estudiante).outerjoin(ProfesorElectiva).outerjoin(Profesor).all()
 
 
+      return render_template('admin/electivascrud.html', administrador=session["administrador"], form = electivas, elecpro=elecpro)
 
-      if request.method == "POST":
+   else :
+      return redirect(url_for('login'))
+
+
+# --------------------- ELECTIVA CREAR ----------------------------
+@app.route('/electivacrear', methods=["POST"])
+def electivacrear():
+   if request.method == "POST":
          try :
 
             electiva = json.loads(request.data.decode('utf-8'))
@@ -273,64 +285,62 @@ def electivascrud():
             return jsonify({'success' : '1'})
 
          except:
-            return jsonify({'success': '0'})
 
-      return render_template('admin/electivascrud.html', administrador=session["administrador"], form = electivas, elecpro=elecpro)
-   else :
+            return jsonify({'success': '0'})
+   else:
       return redirect(url_for('login'))
+
 
 # --------------------- ELIMINAR ELECTIVA ----------------------------
 @app.route('/electivaeliminar/<id>', methods=["GET"])
 def electivaeliminar(id):
 
-   if 'administrador' in session:
 
-      if request.method == "GET":
+   if request.method == "GET":
          
-         try :
+      try :
 
-            electiva = db.session.query(Electiva).filter(Electiva.id==id).first()
+         electiva = db.session.query(Electiva).filter(Electiva.id==id).first()
 
-            db.session.delete(electiva)
-            db.session.commit()
+         db.session.delete(electiva)
+         db.session.commit()
 
-            return jsonify({'success' : '1'})
+         return jsonify({'success' : '1'})
 
-         except Exception:
-            return jsonify({'success' : '0'})
+      except Exception:
+         return jsonify({'success' : '0'})
 
-      else :
-        return jsonify({'success' : '0'})
-      
    else :
       return redirect(url_for('login'))
+
+      
 
 
 # --------------------- EDITAR ELECTIVA  -----------------------------
 @app.route("/electivaeditar", methods=["GET", "POST"])
 def electvaeditar():
 
-   if 'administrador' in session:
-      if request.method == "POST":
-         try :
+   if request.method == "POST":
+      try :
             
-            electiva = json.loads(request.data.decode('utf-8'))
+         electiva = json.loads(request.data.decode('utf-8'))
 
-            electivall = Electiva.query.filter_by(id=electiva["id"]).first()
+         electivall = Electiva.query.filter_by(id=electiva["id"]).first()
             
-            if electivall is not None:
+         if electivall is not None:
                
-               electivall.nombre = electiva["nombre"]
-               electivall.descripcion = electiva["descripcion"]
-               electivall.numerocupo = int(electiva["numerocupo"])
-               db.session.commit()
+            electivall.nombre = electiva["nombre"]
+            electivall.descripcion = electiva["descripcion"]
+            electivall.numerocupo = int(electiva["numerocupo"])
+            db.session.commit()
 
-            return jsonify({'success': '1'})
-         except:
-            return jsonify({'success' : '0'})
-     
-   else:
+         return jsonify({'success': '1'})
+      except:
+         return jsonify({'success' : '0'})
+   else :
       return redirect(url_for('login'))
+     
+
 
 
 # -------------------- USUARIO ------------------------
@@ -348,32 +358,40 @@ def usuario():
       estlec = db.session.query(EstudianteElectiva, Electiva).filter(EstudianteElectiva.estudiante_id==usuario.id).join(Electiva)
 
 
-      if request.method == "POST":
-         try :
 
-            electiva = json.loads(request.data.decode('utf-8'))
-         
-            usuario =  Estudiante.query.filter_by(correo=session["usuario"]).first()
-
-            datoelec = Electiva.query.filter_by(id=electiva["electiva_id"]).first()
-
-            if datoelec.numerocupo > 0:
-               datoelec.numerocupo -= 1
-               register = EstudianteElectiva(estudiante_id=usuario.id, electiva_id=electiva["electiva_id"])
-               db.session.add(register)
-               db.session.commit()
-            else :
-
-                return jsonify({'success' : '2'})
-
-            return jsonify({'success' : '1'})
-
-         except:
-            return jsonify({'success': '0'})
 
       return render_template('usuario.html', usuario=session["usuario"], estlec=estlec, elest=elest)
    else:
       return redirect(url_for('login'))
+
+# -------------------- USUARIO INSCRIBIR ------------------------
+@app.route('/usuarioins/<id>', methods=["GET","POST"])
+def usuarioins(id):
+
+   if 'usuario' in session :
+
+      try :
+         
+         usuario =  Estudiante.query.filter_by(correo=session["usuario"]).first()
+
+         datoelec = Electiva.query.filter_by(id=id).first()
+
+         if datoelec.numerocupo > 0:
+            datoelec.numerocupo -= 1
+            register = EstudianteElectiva(estudiante_id=usuario.id, electiva_id=id)
+            db.session.add(register)
+            db.session.commit()
+         else :
+
+            return "No hay cupos"
+
+         return redirect(url_for('usuario'))
+
+      except:
+         return "Ya la creaste"
+   else :
+      return redirect(url_for('login'))
+
 
 
 # --------------------- CERRAR  SECION ----------------------------
@@ -392,4 +410,4 @@ if __name__ == '__main__':
    with app.app_context():
       db.create_all()
 
-   app.run(port = 8001, debug = False)
+   app.run(port = 8001, debug = True)

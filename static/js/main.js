@@ -119,6 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btnLogin.addEventListener('click', (evt) => {
 
+            evt.preventDefault();
+
             const correo = document.getElementById('correo').value;
             const password = document.getElementById('password').value;
             const alerta = document.getElementById('alerta');
@@ -134,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 fetch('/login', {
                     method: 'POST',
-                    body: JSON.stringify(user),
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "numerocupo": numerocupo
                 };
 
-                fetch('/electivascrud', {
+                fetch('/electivacrear', {
                     method: 'POST',
                     body: JSON.stringify(electiva),
                     headers: {
@@ -388,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
 
-                fetch('/profesorcrud', {
+                fetch('/profesorcrear', {
                     method: 'POST',
                     body: JSON.stringify(profesor),
                     headers: {
@@ -577,13 +578,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = parseInt(selectElement.options[selectElement.selectedIndex].id);
             const alerta = document.getElementById('alerta');
 
-            let estudiante = {
-                "electiva_id": data,
-            };
+            window.location.href = `/usuarioins/${data}`;
 
-            fetch('/usuario', {
-                method: 'POST',
-                body: JSON.stringify(estudiante),
+/*             fetch(`/usuarioins/${data}`, {
+                method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -596,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         alerta.innerHTML = "<div class='alert alert-success' role='alert'> Muy bien! </div>";
 
-                        window.location.href = "usuario";
+                       ;
 
 
                     } else if (response.success == 2) {
@@ -609,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
                 });
-
+ */
         });
 
 
