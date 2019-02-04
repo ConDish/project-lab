@@ -267,7 +267,6 @@ def electivascrud():
 
             db.session.commit()
 
-            print(electiva)
 
             return jsonify({'success' : '1'})
 
