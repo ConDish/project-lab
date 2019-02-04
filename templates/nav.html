@@ -10,35 +10,41 @@
 
       <ul class="navbar-nav mr-auto">
 
-         <li class="nav-item">
-            <a class="nav-link" href="/">Inicio</a>
-         </li>
+        
 
 
-         {% if username %}
-         <li class="nav-item">
-            <a class="nav-link" href="logeado">Tabla</a>
-         </li>
+         {% if usuario %}
+            <li class="nav-item">
+               <a class="nav-link" href="/usuario">Inicio</a>
+            </li>
 
-         <li class="nav-item">
-            <a class="nav-link" href="#">Perfil</a>
-         </li>
-
-         <li class="nav-item">
-            <a class="nav-link" href="logout">Cerrar Seccion</a>
-         </li>
+            <li class="nav-item">
+               <a class="nav-link" href="logout/usuario">Cerrar Seccion</a>
+            </li>
 
 
+         {% elif administrador %}
+            <li class="nav-item">
+               <a class="nav-link" href="profesorcrud">Profesores</a>
+            </li>
 
+            <li class="nav-item">
+               <a class="nav-link" href="electivascrud">Electivas</a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="logout/administrador">Cerrar Seccion</a>
+            </li>
 
          {% else %}
-         <li class="nav-item">
-            <a class="nav-link" href="login">Login</a>
-         </li>
 
-         <li class="nav-item">
-            <a class="nav-link" href="registro">Registrarte</a>
-         </li>
+            <li class="nav-item">
+               <a class="nav-link" href="login">Login</a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="registro">Registrarte</a>
+            </li>
 
          {% endif %}
 

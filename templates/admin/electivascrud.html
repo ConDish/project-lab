@@ -1,0 +1,138 @@
+{% extends 'base/head.html'%}
+
+
+{% block nav %}
+
+{% include 'nav.html'%}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="col-md-12" id="alerta-table">
+
+    </div>
+    <div class="row justify-content-center">
+
+        <div class="col-md-12">
+            <div class="col-md-12 text-center bg-info">
+                <h1 class="text-white-50">Todas las Electivas</h1>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-light" id="elec">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Numero de cupos</th>
+                            <th scope="col">Profesor asociado</th>
+                            <th scope="col">Estudiantes asociados</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for e,s,p in elecpro %}
+
+                        <tr>
+
+                            <th scope="row">{{ e.id}}</th>
+                            <td>{{ e.nombre}}</td>
+                            <td>{{ e.descripcion}}</td>
+                            <td>{{ e.numerocupo}}</td>
+                            <td>{{ p.nombre }}</td>
+                            <td>{{ s.correo }}</td>
+                            <td>
+                                <a class="btn btn-success" id="btnEditarElectiva" data-toggle="modal" data-target="#modaleditar">Editar</a>
+                                <a class="btn btn-danger" id="btnEliminarElectiva" >Eliminar</a>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="mt-5">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Crea una electiva</h1>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-7 bg-dark p-4 rounded shadow-lg">
+                {% from "macro.html" import render_field%}
+
+                <div id="alerta">
+
+                </div>
+                <div class="form-group">
+                    <label for="" class="text-white">{{ form.nombre.label }}</label>
+                    {{ render_field(form.nombre, class='form-control')}}
+                </div>
+                <div class="form-group">
+                    <label for="" class="text-white">{{ form.descripcion.label }}</label>
+                    {{ render_field(form.descripcion, class='form-control')}}
+                </div>
+                <div class="form-group">
+                    <label for="" class="text-white">{{ form.numerocupo.label }}</label>
+                    {{ render_field(form.numerocupo, class='form-control', type="number")}}
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-danger w-100" value="Crear electiva" id="btnElectiva">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modaleditar" tabindex="-1" role="dialog" aria-labelledby="modaleditarLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modaleditarLabel">Editar electiva</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="alerta-modal"></div>
+                    <div class="form-group">
+                        <label for="" class="text-dark">{{ form.nombre.label }}</label>
+                        {{ render_field(form.nombre, class='form-control', id="nombre-modal")}}
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-dark">{{ form.descripcion.label }}</label>
+                        {{ render_field(form.descripcion, class='form-control', id="descripcion-modal")}}
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-dark">{{ form.numerocupo.label }}</label>
+                        {{ render_field(form.numerocupo, class='form-control', type="number", id="numerocupo-modal")}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveElectiva">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock%}

@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, StringField, PasswordField, IntegerField
+from wtforms import Form, TextField, StringField, PasswordField, IntegerField, SelectField, TextAreaField
 
 
 class registro(Form):
@@ -9,9 +9,18 @@ class registro(Form):
 
 class login(Form):
    correo = StringField('Correo')
-   password = StringField('Contrasena')
+   password = PasswordField('Contrasena')
    
 
 class generarCodigo(Form):
    codigo = IntegerField('Codigo')
+
+class profesor(Form):
+   idprofe = IntegerField('Codigo')
+   nombre = StringField('Nombre')
+
+class electivas(Form):
+   nombre = StringField('Nombre')
+   descripcion = TextAreaField('Descripcion')
+   numerocupo = IntegerField('Numero de cupos')
    
